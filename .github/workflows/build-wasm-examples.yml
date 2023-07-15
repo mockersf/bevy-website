@@ -9,7 +9,8 @@ jobs:
     name: Build WebGPU Examples
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - name: Checkout Bevy latest tag
+        uses: actions/checkout@master
         with:
           repository: 'bevyengine/bevy'
           ref: 'latest'
@@ -20,8 +21,8 @@ jobs:
           mkdir ./binaryen
           wget -qO- https://github.com/WebAssembly/binaryen/releases/download/version_114/binaryen-version_114-x86_64-linux.tar.gz | tar xvz -C ./binaryen binaryen-version_114 --strip=1
 
-      - uses: dtolnay/rust-toolchain@stable
-        name: Setup Rust
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
         with:
           target: wasm32-unknown-unknown,x86_64-unknown-linux-gnu
 
