@@ -17,6 +17,7 @@ jobs:
         page: [0, 1, 2]
         api: [webgl2, webgpu]
     steps:
+
       - name: Checkout Bevy latest tag
         uses: actions/checkout@master
         with:
@@ -32,7 +33,7 @@ jobs:
           path: 'bevy-tools'
       - name: Copy Bevy tools to latest
         run: |
-          cp -r bevy-tools/tools tools
+          cp -r bevy-tools/tools/ tools
           rm -rf bevy-tools
 
       - name: Install WASM tooling
