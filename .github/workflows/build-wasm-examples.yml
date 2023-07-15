@@ -19,7 +19,7 @@ jobs:
         run: |
           cargo install --force wasm-bindgen-cli
           mkdir ./binaryen
-          wget -qO- https://github.com/WebAssembly/binaryen/releases/download/version_114/binaryen-version_114-x86_64-linux.tar.gz | tar xvz -C ./binaryen binaryen-version_114 --strip-components 1
+          wget -qO- https://github.com/WebAssembly/binaryen/releases/download/version_114/binaryen-version_114-x86_64-linux.tar.gz | tar xvz --strip-components 1 -C ./binaryen binaryen-version_114
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
