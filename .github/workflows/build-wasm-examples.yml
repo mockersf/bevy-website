@@ -4,10 +4,13 @@ on:
   push:
   workflow_dispatch:
 
+env:
+  PER_PAGE: 50
+
 jobs:
   webgpu-examples:
-    name: Build WebGPU Examples
-    runs-on: ubuntu-latest
+    name: Build WASM Examples
+    runs-on: macos-latest
     strategy:
       matrix:
         # if all examples are not built, add a new page here
@@ -17,26 +20,39 @@ jobs:
       - name: Checkout Bevy latest tag
         uses: actions/checkout@master
         with:
+          repository: 'bevyengine/bevy'
+          ref: 'latest'
+
+      # temp: fetch tools from pr
+      - name: Checkout Bevy Tools
+        uses: actions/checkout@master
+        with:
           repository: 'mockersf/bevy'
           ref: 'example-showcase-improvements'
+          path: 'bevy-tools'
+      - name: Copy Bevy tools to latest
+        run: |
+          cp -r bevy-tools/tools tools
+          rm -rf bevy-tools
 
       - name: Install WASM tooling
         run: |
           cargo install --force wasm-bindgen-cli
           mkdir ./binaryen
-          wget -qO- https://github.com/WebAssembly/binaryen/releases/download/version_114/binaryen-version_114-x86_64-linux.tar.gz | tar xvz -C ./binaryen binaryen-version_114 --strip=1
+          wget -qO- https://github.com/WebAssembly/binaryen/releases/download/version_114/binaryen-version_114-x86_64-macos.tar.gz | tar xvz --strip-components 1 -C ./binaryen binaryen-version_114
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
         with:
-          target: wasm32-unknown-unknown,x86_64-unknown-linux-gnu
+          target: wasm32-unknown-unknown,x86_64-apple-darwin
 
       - name: Build WASM Examples
         run: |
           export PATH=$PATH:`pwd`/binaryen/bin
-          cargo run -p example-showcase -- --per-page 50 --page ${{ matrix.page }} build-wasm-examples --content-folder wasm-examples --api ${{ matrix.api }} --website-hacks --optimize-size
+          cargo run -p example-showcase -- --per-page ${{ env.PER_PAGE }} --page ${{ matrix.page }} build-wasm-examples --content-folder wasm-examples --api ${{ matrix.api }} --website-hacks --optimize-size
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload Generated Files
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.api }}-examples-${{ matrix.page }}
           path: wasm-examples
