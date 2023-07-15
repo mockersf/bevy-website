@@ -1,0 +1,22 @@
+name: Build WASM Examples
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          repository: 'bevyengine/bevy'
+          ref: 'latest'
+
+      - name: Install Dependencies
+        run: |
+          cargo install --force wasm-bindgen-cli
+          wget -qO- https://github.com/WebAssembly/binaryen/releases/download/version_114/binaryen-version_114-x86_64-linux.tar.gz | tar xvz -C ./binaryen binaryen-version_114 --strip=1
+
+      - name: Build WASM Examples
+        run: |
+          cargo run -p example-showcase -- build-web-gpu-examples --content-folder webgpus --website-hacks --optimize-size
