@@ -1,6 +1,7 @@
 name: Build WASM Examples
 
 on:
+  push:
   workflow_dispatch:
 
 jobs:
@@ -17,9 +18,9 @@ jobs:
         run: |
           cargo install --force wasm-bindgen-cli
           mkdir /binaryen
-          wget -qO- https://github.com/WebAssembly/binaryen/releases/download/version_114/binaryen-version_114-x86_64-linux.tar.gz | tar xvz -C /binaryen binaryen-version_114 --strip=1
+          wget -qO- https://github.com/WebAssembly/binaryen/releases/download/version_114/binaryen-version_114-x86_64-linux.tar.gz | tar xvz -C ./binaryen binaryen-version_114 --strip=1
 
       - name: Build WASM Examples
         run: |
-          export PATH=$PATH:/binaryen/bin
+          export PATH=$PATH:`pwd`/binaryen/bin
           cargo run -p example-showcase -- build-web-gpu-examples --content-folder webgpus --website-hacks --optimize-size
