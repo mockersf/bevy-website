@@ -23,7 +23,7 @@ jobs:
           repository: 'bevyengine/bevy'
           ref: 'latest'
 
-      # temp: fetch tools from pr
+      # temporary: fetch tools from main branch
       - name: Checkout Bevy Tools
         uses: actions/checkout@master
         with:
