@@ -95,7 +95,11 @@ jobs:
               return "true"
         - run: |
             ls -lrtha
-            for file in ${{ matrix.api }}-examples-*; do unzip -o $file; done
+            for file in ${{ matrix.api }}-examples-*
+            do
+              unzip -o $file
+              rm $file
+            done
             ls -lrtha
 
         - name: Publish to Cloudflare Pages
