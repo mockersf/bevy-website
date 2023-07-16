@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  PER_PAGE: 1
+  PER_PAGE: 50
 
 jobs:
   wasm-examples:
