@@ -81,7 +81,7 @@ jobs:
               var matchArtifacts = artifacts.data.artifacts.filter((artifact) => {
                 return artifact.name.startsWith("${{ matrix.api }}-examples-")
               });
-              for (let i = 0; i < cars.length; i++) { 
+              for (let i = 0; i < matchArtifacts.length; i++) { 
                 var matchArtifact = matchArtifacts[i];
                 var download = await github.rest.actions.downloadArtifact({
                   owner: context.repo.owner,
