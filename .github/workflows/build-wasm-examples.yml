@@ -98,3 +98,17 @@ jobs:
             for file in ${{ matrix.api }}-examples-*; do unzip -o $file; done
             ls -lrtha
 
+        - name: Publish to Cloudflare Pages
+          uses: cloudflare/pages-action@v1
+          with:
+            apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+            accountId: e4ae7cfc404d73db40d8bb8626d89007
+            projectName: bevy-wasm-${{ matrix.api }}
+            directory: /
+            # # Optional: Switch what branch you are publishing to.
+            # # By default this will be the branch which triggered this workflow
+            # branch: main
+            # # Optional: Change the working directory
+            # workingDirectory: my-site
+            # # Optional: Change the Wrangler version, allows you to point to a specific version or a tag such as `beta`
+            # wranglerVersion: '3'
