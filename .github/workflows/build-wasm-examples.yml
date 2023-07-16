@@ -36,16 +36,16 @@ jobs:
           cp -r bevy-tools/tools/ tools
           rm -rf bevy-tools
 
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          target: wasm32-unknown-unknown,x86_64-apple-darwin
+
       - name: Install WASM tooling
         run: |
           cargo install --force wasm-bindgen-cli
           mkdir ./binaryen
           wget -qO- https://github.com/WebAssembly/binaryen/releases/download/version_114/binaryen-version_114-x86_64-macos.tar.gz | tar xvz --strip-components 1 -C ./binaryen binaryen-version_114
-
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          target: wasm32-unknown-unknown,x86_64-apple-darwin
 
       - name: Build WASM Examples
         run: |
