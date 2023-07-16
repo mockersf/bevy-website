@@ -78,10 +78,18 @@ jobs:
                 repo: context.repo.repo,
                 run_id: ${{ github.run_id }},
               });
+              console.log("artifacts");
+              for (let i = 0; i < artifacts.length; i++) {
+                console.log(artifacts[i].name);
+              }
               var matchArtifacts = artifacts.data.artifacts.filter((artifact) => {
                 return artifact.name.startsWith("${{ matrix.api }}-examples-")
               });
-              for (let i = 0; i < matchArtifacts.length; i++) { 
+              console.log("matchArtifacts");
+              for (let i = 0; i < matchArtifacts.length; i++) {
+                console.log(matchArtifacts[i].name);
+              }
+              for (let i = 0; i < matchArtifacts.length; i++) {
                 var matchArtifact = matchArtifacts[i];
                 var download = await github.rest.actions.downloadArtifact({
                   owner: context.repo.owner,
