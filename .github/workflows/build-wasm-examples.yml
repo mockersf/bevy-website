@@ -85,6 +85,7 @@ jobs:
               var matchArtifacts = artifacts.data.artifacts.filter((artifact) => {
                 return artifact.name.startsWith("${{ matrix.api }}-examples-")
               });
+              console.log("${{ matrix.api }}-examples-");
               console.log("matchArtifacts");
               for (let i = 0; i < matchArtifacts.length; i++) {
                 console.log(matchArtifacts[i].name);
