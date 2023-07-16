@@ -76,8 +76,11 @@ jobs:
             mkdir ${{ matrix.api }}
             for file in ${{ matrix.api }}-examples-*
             do
-              cp -r $file/* ${{ matrix.api }}/
+              rsync -a $file/* ${{ matrix.api }}/
             done
+            echo "done moving files"
+            ls -lrtha
+            ls -lrtha ${{ matrix.api }}
 
         - name: Publish to Cloudflare Pages
           uses: cloudflare/pages-action@v1
