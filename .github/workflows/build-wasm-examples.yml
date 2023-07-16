@@ -72,15 +72,11 @@ jobs:
 
         - name: Group examples in one folder
           run: |
-            ls -lrtha
             mkdir ${{ matrix.api }}
             for file in ${{ matrix.api }}-examples-*
             do
               rsync -a $file/* ${{ matrix.api }}/
             done
-            echo "done moving files"
-            ls -lrtha
-            ls -lrtha ${{ matrix.api }}
 
         - name: Publish to Cloudflare Pages
           uses: cloudflare/pages-action@v1
