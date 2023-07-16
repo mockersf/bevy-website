@@ -67,49 +67,17 @@ jobs:
           api: [webgl2, webgpu]  
       steps:
         
-        - name: Download artifacts
-          id: download-artifact
-          uses: actions/github-script@v6
-          with:
-            result-encoding: string
-            script: |
-              var artifacts = await github.rest.actions.listWorkflowRunArtifacts({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                run_id: ${{ github.run_id }},
-              });
-              console.log("artifacts");
-              for (let i = 0; i < artifacts.length; i++) {
-                console.log(artifacts[i].name);
-              }
-              var matchArtifacts = artifacts.data.artifacts.filter((artifact) => {
-                return artifact.name.startsWith("${{ matrix.api }}-examples-")
-              });
-              console.log("${{ matrix.api }}-examples-");
-              console.log("matchArtifacts");
-              for (let i = 0; i < matchArtifacts.length; i++) {
-                console.log(matchArtifacts[i].name);
-              }
-              for (let i = 0; i < matchArtifacts.length; i++) {
-                var matchArtifact = matchArtifacts[i];
-                var download = await github.rest.actions.downloadArtifact({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  artifact_id: matchArtifact.id,
-                  archive_format: 'zip',
-                });
-                var fs = require('fs');
-                fs.writeFileSync('${{ github.workspace }}/' + matchArtifact.name, Buffer.from(download.data));
-              }
-              return "true"
-        - run: |
+        - name: Download all artifacts
+          uses: actions/download-artifact@v3
+
+        - name: Group examples in one folder
+          run: |
             ls -lrtha
+            mkdir ${{ matrix.api }}
             for file in ${{ matrix.api }}-examples-*
             do
-              unzip -o $file
-              rm $file
+              cp -r $file/* ${{ matrix.api }}/
             done
-            ls -lrtha
 
         - name: Publish to Cloudflare Pages
           uses: cloudflare/pages-action@v1
@@ -118,10 +86,10 @@ jobs:
             accountId: e4ae7cfc404d73db40d8bb8626d89007
             projectName: bevy-wasm-${{ matrix.api }}
             directory: /
+            workingDirectory: ${{ matrix.api }}
             # # Optional: Switch what branch you are publishing to.
             # # By default this will be the branch which triggered this workflow
             # branch: main
             # # Optional: Change the working directory
-            # workingDirectory: my-site
             # # Optional: Change the Wrangler version, allows you to point to a specific version or a tag such as `beta`
             # wranglerVersion: '3'
