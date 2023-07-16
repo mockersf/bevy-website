@@ -1,7 +1,6 @@
 name: Build WASM Examples
 
 on:
-  push:
   workflow_dispatch:
 
 env:
@@ -28,8 +27,8 @@ jobs:
       - name: Checkout Bevy Tools
         uses: actions/checkout@master
         with:
-          repository: 'mockersf/bevy'
-          ref: 'example-showcase-improvements'
+          repository: 'bevyengine/bevy'
+          ref: 'main'
           path: 'bevy-tools'
       - name: Copy Bevy tools to latest
         run: |
