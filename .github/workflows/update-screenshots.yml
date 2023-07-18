@@ -1,0 +1,62 @@
+name: Update Screenshots
+
+on:
+  push:
+  workflow_dispatch:
+
+env:
+  PER_PAGE: 25
+
+jobs:
+  update-screenshots:
+    name: Update Screenshots
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # if all examples are not built, add a new page here
+        page: [0, 1, 2, 3, 4, 5]
+    steps:
+
+      - name: Checkout Bevy latest tag
+        uses: actions/checkout@master
+        with:
+          repository: 'bevyengine/bevy'
+          ref: 'latest'
+
+      # temporary: fetch tools from main branch
+      - name: Checkout Bevy Tools
+        uses: actions/checkout@master
+        with:
+          repository: 'bevyengine/bevy'
+          ref: 'main'
+          path: 'bevy-tools'
+      - name: Copy Bevy tools to latest
+        run: |
+          cp -r bevy-tools/tools/ tools
+          rm -rf bevy-tools
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Bevy dependencies
+        run: |
+          sudo apt-get update;
+          DEBIAN_FRONTEND=noninteractive sudo apt-get install --no-install-recommends -yq \
+            libasound2-dev libudev-dev;
+
+      - name: install xvfb, llvmpipe and lavapipe
+        run: |
+          sudo apt-get update -y -qq
+          sudo add-apt-repository ppa:oibaf/graphics-drivers -y
+          sudo apt-get update
+          sudo apt install -y xvfb libegl1-mesa libgl1-mesa-dri libxcb-xfixes0-dev mesa-vulkan-drivers
+
+      - name: Take Screenshots
+        run: |
+          xvfb-run cargo run -p example-showcase -- --page ${{ matrix.page }} --per-page ${{ env.PER_PAGE }} run --screenshot
+
+      - name: Upload Generated Files
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshots-${{ matrix.page }}
+          path: screenshots
