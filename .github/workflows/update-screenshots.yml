@@ -32,6 +32,7 @@ jobs:
           path: 'bevy-tools'
       - name: Copy Bevy tools to latest
         run: |
+          rm -rf tools
           cp -r bevy-tools/tools/ tools
           rm -rf bevy-tools
 
