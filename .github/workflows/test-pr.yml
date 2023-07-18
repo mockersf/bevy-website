@@ -13,8 +13,6 @@ jobs:
       
       - name: Clone bevy-website repo
         uses: actions/checkout@master
-        with:
-          ref: examples-update
 
       - name: Move examples to the correct folder
         run: |
@@ -26,4 +24,3 @@ jobs:
           delete-branch: true
           title: Update Examples Screenshots
           branch-suffix: random
-          base: examples-update
