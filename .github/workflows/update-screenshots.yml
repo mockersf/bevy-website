@@ -53,6 +53,10 @@ jobs:
 
       - name: Take Screenshots
         run: |
+          cargo run -p example-showcase -- --help
+          cargo run -p example-showcase -- run --help
+          xvfb-run cargo run -p example-showcase -- --help
+          xvfb-run cargo run -p example-showcase -- run --help
           xvfb-run cargo run -p example-showcase -- --page ${{ matrix.page }} --per-page ${{ env.PER_PAGE }} run --screenshot
 
       - name: Upload Generated Files
