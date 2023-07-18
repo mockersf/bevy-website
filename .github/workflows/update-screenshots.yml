@@ -8,8 +8,8 @@ env:
   PER_PAGE: 25
 
 jobs:
-  update-screenshots:
-    name: Update Screenshots
+  take-screenshots:
+    name: Take Screenshots
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -65,3 +65,28 @@ jobs:
         with:
           name: screenshots-${{ matrix.page }}
           path: screenshots
+
+  prepare-pr:
+    name: Prepare Screenshots Update PR
+    runs-on: ubuntu-latest
+    needs: take-screenshots
+    steps:
+      
+      - name: Clone bevy-website repo
+        uses: actions/checkout@master
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Move examples to the correct folder
+        run: |
+          rm -rf static/screenshots
+          mkdir static/screenshots
+          for file in screenshots-*
+          do
+            rsync -a $file/* static/screenshots/
+            rm -rf $file
+          done
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
