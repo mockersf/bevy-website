@@ -89,3 +89,4 @@ jobs:
         with:
           delete-branch: true
           title: Update Examples Screenshots
+          branch-suffix: random
