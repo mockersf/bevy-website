@@ -1,0 +1,29 @@
+name: Update Screenshots
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+
+  prepare-pr:
+    name: Prepare Screenshots Update PR
+    runs-on: ubuntu-latest
+    steps:
+      
+      - name: Clone bevy-website repo
+        uses: actions/checkout@master
+        with:
+          ref: examples-update
+
+      - name: Move examples to the correct folder
+        run: |
+          rm -rf static/screenshots
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          delete-branch: true
+          title: Update Examples Screenshots
+          branch-suffix: random
+          base: examples-update
