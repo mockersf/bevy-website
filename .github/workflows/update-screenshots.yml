@@ -102,8 +102,10 @@ jobs:
       
       - name: Clone bevy-website repo
         uses: actions/checkout@master
+        with:
+          fetch-depth: 0
 
-      - name: Move examples to the correct folder
+      - name: Update examples
         run: |
           rm -rf static/screenshots
 
