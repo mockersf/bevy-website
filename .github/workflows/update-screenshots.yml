@@ -91,3 +91,24 @@ jobs:
           delete-branch: true
           title: Update Examples Screenshots
           branch-suffix: random
+
+  fast-pr:
+    name: Fast PR
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      
+      - name: Clone bevy-website repo
+        uses: actions/checkout@master
+
+      - name: Move examples to the correct folder
+        run: |
+          rm -rf static/screenshots
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          delete-branch: true
+          title: Fast
+          branch-suffix: random
