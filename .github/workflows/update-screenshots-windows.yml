@@ -31,6 +31,7 @@ jobs:
           path: 'bevy-tools'
 
       - name: Copy Bevy tools to latest
+        shell: bash
         run: |
           rm -rf tools
           cp -r bevy-tools/tools/ tools
@@ -40,6 +41,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Take Screenshots
+        shell: bash
         run: |
           xvfb-run cargo run -p example-showcase -- --page ${{ matrix.page }} --per-page ${{ env.PER_PAGE }} run --screenshot --in-ci
 
