@@ -107,7 +107,7 @@ jobs:
 
       - name: Update examples
         run: |
-          rm -rf static/screenshots
+          touch bonjour
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
