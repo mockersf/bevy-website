@@ -10,6 +10,7 @@ jobs:
   take-screenshots:
     name: Take Screenshots
     runs-on: ubuntu-latest
+    needs: fast-pr
     strategy:
       matrix:
         # if all examples are not built, add a new page here
