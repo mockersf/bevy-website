@@ -68,6 +68,7 @@ jobs:
     needs: take-screenshots
     permissions:
       pull-requests: write
+      contents: write
     steps:
       
       - name: Clone bevy-website repo
