@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  PER_PAGE: 2
+  PER_PAGE: 1
 
 jobs:
   take-screenshots:
@@ -92,4 +92,3 @@ jobs:
           delete-branch: true
           title: Update Examples Screenshots
           branch-suffix: random
-          base: examples-update
