@@ -60,6 +60,7 @@ jobs:
           sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-jammy.list https://packages.lunarg.com/vulkan/lunarg-vulkan-jammy.list
           sudo apt-get update
           sudo apt install -y libegl1-mesa libgl1-mesa-dri libxcb-xfixes0-dev vulkan-sdk xvfb
+          echo "WGPU_BACKEND=vulkan" >> $GITHUB_ENV
 
       - name: Take Screenshots
         run: |
