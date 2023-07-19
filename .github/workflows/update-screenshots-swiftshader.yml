@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@master
         with:
           repository: 'mockersf/bevy'
-          ref: 'example-showcase-can-remove-desktop-mode'
+          ref: 'e2d1b3ded0bf758262ffe2dcf53c6532918f15af'
           path: 'bevy-tools'
       - name: Copy Bevy tools to latest
         run: |
@@ -63,7 +63,7 @@ jobs:
 
       - name: Take Screenshots
         run: |
-          xvfb-run cargo run -p example-showcase -- --page ${{ matrix.page }} --per-page ${{ env.PER_PAGE }} run --screenshot --in-ci
+          xvfb-run cargo run -p example-showcase -- --page ${{ matrix.page }} --per-page ${{ env.PER_PAGE }} run --screenshot
 
       - name: Upload Generated Files
         uses: actions/upload-artifact@v3
