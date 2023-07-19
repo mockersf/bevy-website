@@ -44,27 +44,32 @@ jobs:
           DEBIAN_FRONTEND=noninteractive sudo apt-get install --no-install-recommends -yq \
             libasound2-dev libudev-dev;
 
-      - name: Install swiftshader
+      - name: install swiftshader
         run: |
           set -e
+
           mkdir -p swiftshader
           curl -LsSf https://github.com/gfx-rs/ci-build/releases/latest/download/swiftshader-linux-x86_64.tar.xz | tar -xf - -C swiftshader
+
           echo "VK_ICD_FILENAMES=$PWD/swiftshader/vk_swiftshader_icd.json" >> $GITHUB_ENV
 
-      - name: Install llvmpipe, vulkan sdk, xvfb
+      - name: install llvmpipe, vulkan sdk
         run: |
           set -e
+
           sudo apt-get update -y -qq
+
           # vulkan sdk
           wget -qO - https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo apt-key add -
           sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-jammy.list https://packages.lunarg.com/vulkan/lunarg-vulkan-jammy.list
+
           sudo apt-get update
-          sudo apt install -y libegl1-mesa libgl1-mesa-dri libxcb-xfixes0-dev vulkan-sdk xvfb
-          echo "WGPU_BACKEND=vulkan" >> $GITHUB_ENV
+          sudo apt install -y libegl1-mesa libgl1-mesa-dri libxcb-xfixes0-dev vulkan-sdk
 
       - name: Take Screenshots
         run: |
-          DRI_PRIME=0 xvfb-run cargo run -p example-showcase -- --page ${{ matrix.page }} --per-page ${{ env.PER_PAGE }} run --screenshot
+          export
+          xvfb-run cargo run -p example-showcase -- --page ${{ matrix.page }} --per-page ${{ env.PER_PAGE }} run --screenshot
 
       - name: Upload Generated Files
         uses: actions/upload-artifact@v3
