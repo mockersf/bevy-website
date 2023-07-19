@@ -43,7 +43,7 @@ jobs:
       - name: Take Screenshots
         shell: bash
         run: |
-          xvfb-run cargo run -p example-showcase -- --page ${{ matrix.page }} --per-page ${{ env.PER_PAGE }} run --screenshot --in-ci
+          cargo run -p example-showcase -- --page ${{ matrix.page }} --per-page ${{ env.PER_PAGE }} run --screenshot --in-ci
 
       - name: Upload Generated Files
         uses: actions/upload-artifact@v3
