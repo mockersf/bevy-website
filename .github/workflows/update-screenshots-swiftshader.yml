@@ -69,7 +69,8 @@ jobs:
       - name: Take Screenshots
         run: |
           export
-          xvfb-run cargo run -p example-showcase -- --page ${{ matrix.page }} --per-page ${{ env.PER_PAGE }} run --screenshot
+          cat $VK_ICD_FILENAMES
+          WGPU_BACKEND=vulkan xvfb-run cargo run -p example-showcase -- --page ${{ matrix.page }} --per-page ${{ env.PER_PAGE }} run --screenshot
 
       - name: Upload Generated Files
         uses: actions/upload-artifact@v3
