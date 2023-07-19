@@ -96,8 +96,9 @@ jobs:
   fast-pr:
     name: Fast PR
     runs-on: ubuntu-latest
-    # permissions:
-    #   pull-requests: write
+    permissions:
+      pull-requests: write
+      contents: write
     steps:
       
       - name: Clone bevy-website repo
